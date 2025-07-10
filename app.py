@@ -301,7 +301,7 @@ if df is not None:
     # =============================================
 
     with st.expander(
-        "📊 Visualização Estática do Grafo (Métricas de Centralidade)", expanded=False
+        "📊 Visualização Estática do Grafo (Métricas de Centralidade e Componentes Estruturais)", expanded=False
     ):
         st.markdown(
             """
