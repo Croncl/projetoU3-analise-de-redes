@@ -1,105 +1,120 @@
 # 🔍 Análise e Visualização de Redes
 
-Este projeto é uma aplicação web interativa desenvolvida com **Streamlit** para análise e visualização de redes direcionadas a partir de dados tabulares.
+![Screenshot da Aplicação](       )
 
----
+Este projeto é uma aplicação web interativa desenvolvida com **Streamlit** para análise e visualização de redes direcionadas a partir de dados tabulares, oferecendo insights sobre a estrutura e dinâmica de redes complexas.
 
-## 🚀 Funcionalidades
+# 🌟 Recursos Avançados de Análise de Redes
 
-- Upload de arquivos CSV contendo colunas `source` e `target` para criação do grafo direcionado.
-- Cálculo e exibição de métricas estruturais da rede:
-  - Densidade
-  - Assortatividade de grau
-  - Coeficiente de clustering
-  - Número de componentes fortemente e fracamente conectados
-- Visualização gráfica estática com Matplotlib:
-  - Destaque visual por métricas de centralidade (tamanho e cor dos nós)
-  - Layout aleatório fixo para reprodutibilidade
-  - Rótulos para os 5 nós mais centrais por métrica
-- Visualização gráfica interativa da rede com **PyVis**, incluindo:
-  - Cores e tamanhos dos nós baseados em graus de entrada e saída
-  - Visualização das arestas com pesos (se presentes)
-  - Layout ForceAtlas2 com física ativada
-- Filtros para subgrafo com base em:
-  - Grau mínimo e máximo de entrada ou de saída dos nós
-  - Maior componente fortemente conectado (SCC)
-  - Maior componente fracamente conectado (WCC)
-- Visualização das distribuições de grau (entrada e saída) com histogramas usando Matplotlib e Seaborn
-- Análise de centralidade com múltiplas métricas (degree, closeness, betweenness e eigenvector)
-- Visualização dos nós mais centrais ordenados por métrica selecionada
+## 🔍 Análise Estrutural Completa
+### 📐 Métricas Fundamentais
+- **Densidade da rede**: Medida de conectividade global (0-1)
+- **Assortatividade**: Tendência de conexão entre nós similares (-1 a 1)
+- **Coeficiente de clustering**: Probabilidade de formação de triângulos
 
----
+### 🧩 Componentes da Rede
+- **SCC (Componentes Fortemente Conectados)**: Sub-redes onde todos os nós são mutuamente alcançáveis
+- **WCC (Componentes Fracamente Conectados)**: Sub-redes considerando conexões não-direcionadas
+- **Diâmetro**: Maior distância entre quaisquer dois nós
+- **Caminho médio**: Distância média entre todos os pares de nós
 
-## 🛠 Tecnologias utilizadas
+## 🖼️ Visualização Interativa Avançada
+### 🎨 Personalização Gráfica
+- **Layouts múltiplos**: 
+  - Spring (força-direcionada): Organização baseada em forças de atração/repulsão
+  - Circular (organização radial): Nós dispostos em círculo equidistantes
+  - Random (aleatório): Posicionamento randômico para análise inicial
+- **Sistema de cores**: 
+  - Gradiente azul-amarelo por centralidade
+  - Destaque para comunidades
 
-- [Python 3](https://www.python.org/)
-- [Streamlit](https://streamlit.io/)
-- [NetworkX](https://networkx.org/)
-- [PyVis](https://pyvis.readthedocs.io/en/latest/)
-- [Pandas](https://pandas.pydata.org/)
-- [Matplotlib](https://matplotlib.org/)
-- [Seaborn](https://seaborn.pydata.org/)
-- [Numpy](https://numpy.org/)
+### 📊 Ferramentas de Análise Visual
+- **Ranking automático**: Top 10 nós por métrica selecionada
+- **Distribuição de grau**: 
+  - Visualização logarítmica
+  - Identificação de hubs e outliers
 
----
+## 🕵️ Detecção de Comunidades
+### 🔬 Algoritmo Louvain
+- Detecção hierárquica de grupos
+- Ajuste de parâmetros:
+  - Tamanho mínimo de comunidade
+  - Resolução de modularidade
 
-## 📥 Como usar
+### 📈 Estatísticas de Grupos
+- Quantidade de comunidades
+- Distribuição de tamanhos
+- Densidade intra-comunidade
 
-1. Clone este repositório:
+## 📌 Análise de Centralidade Comparada
+### 🎯 Métricas Principais
+| Métrica | Descrição | Aplicação |
+|---------|-----------|-----------|
+| **Degree** | Número de conexões diretas | Identificação de hubs |
+| **Closeness** | Distância média até outros nós | Nós estratégicos para difusão |
+| **Betweenness** | Mediação em caminhos curtos | Pontes entre comunidades |
+| **Eigenvector** | Influência considerando conexões importantes | Líderes naturais |
 
-   ```bash
-   git clone https://github.com/Croncl/streamlit-wiki-network.git
-   cd streamlit-wiki-network
-   ```
+### 🔗 Componentes Estruturais
+- **Análise WCC**: Avaliação de conectividade básica
+- **Análise SCC**: Identificação de sub-redes interdependentes
 
-2. (Opcional) Crie e ative um ambiente virtual:
+Esta versão:
+1. Organiza hierarquicamente as informações
+2. Adiciona descrições técnicas precisas
+3. Inclui tabela comparativa das métricas
+4. Mantém linguagem acessível com termos técnicos explicados
+5. Melhora a visualização com formatação clara
+6. Destaca aplicações práticas de cada recurso
 
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # Linux/macOS
-   venv\Scripts\activate     # Windows
-   ```
+## 🛠 Tecnologias Utilizadas
+ - Framework: Streamlit
+ - Análise de Redes: NetworkX
+ - Visualização: Matplotlib, Seaborn
+ - Processamento: Pandas, NumPy
 
-3. Instale as dependências:
+## 🚀 Como Usar
 
-   ```bash
-   pip install -r requirements.txt
-   ```
+### Pré-requisitos
+- Python 3.8+
+- Pip instalado
 
-4. Execute a aplicação:
+### Instalação Rápida
+```bash
+git clone https://github.com/Croncl/projetoU3-analise-de-redes.git
+cd projetoU3-analise-de-redes
+pip install -r requirements.txt
+streamlit run app.py
+```
 
-   ```bash
-   streamlit run app.py
-   ```
+### Opções de Dados
+1. **Upload manual** de seu arquivo CSV
+2. **Carregar via URL** do GitHub (formato raw)
+3. **Exemplos pré-configurados**:
+   - Dataset de distribuições (exemplo simples)
+   - Tweets sobre Rouanet (versão reduzida)
+   - Tweets sobre Rouanet (dataset completo)
 
-5. Acesse no navegador: [http://localhost:8501](http://localhost:8501)
+## 📋 Formato dos Dados
+```csv
+source,target,relationship
+A,B,type1, 
+B,C,type2
+C,A,type3
+```
 
-6. Faça upload de um arquivo CSV com colunas `source` e `target` para começar a análise.
+## 📌 Exemplo de Uso
+1. Selecione um dataset de exemplo ou carregue seu arquivo
+2. Explore as métricas estruturais da rede
+3. Visualize o grafo com diferentes layouts
+4. Identifique comunidades e nós centrais
+5. Exporte os resultados para análise posterior
 
----
+## 🌐 Demonstração Online
+Acesse a versão hospedada:  
+[![Streamlit App]
 
-## 🗂 Formato esperado do arquivo CSV
-
-| source | target |
-|--------|--------|
-| A      | B      |
-| B      | C      |
-| C      | A      |
-
-* As colunas indicam uma aresta dirigida de `source` para `target`.
-* Pesos são opcionais.
-
----
-
-## 📈 Métricas calculadas
-
-- **Densidade:** Quão conectada está a rede (0 a 1).
-- **Assortatividade:** Tendência de nós com grau similar se conectarem.
-- **Coeficiente de Clustering:** Grau de formação de triângulos no grafo.
-- **Componentes Fortemente Conectados (SCC):** Subgrafos com nós mutuamente alcançáveis via caminhos dirigidos.
-- **Componentes Fracamente Conectados (WCC):** Subgrafos considerando o grafo como não direcionado.
-
----
-
-## Links:
-- Streamlit: https://app-wiki-network-aaewn8jqefchdvhwkbw7wv.streamlit.app/
+## 📚 Glossário
+- **SCC**: Componente Fortemente Conectado
+- **WCC**: Componente Fracamente Conectado
+- **Eccentricity**: Máxima distância de um nó para qualquer outro

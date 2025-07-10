@@ -20,12 +20,96 @@ Carregue um arquivo CSV com colunas 'source' e 'target' para começar.
 """
 )
 
-# Upload do arquivo
-uploaded_file = st.file_uploader("Escolha um arquivo CSV", type="csv")
+# Upload do arquivo - versão com opções
+st.markdown("### 📁 Selecione a fonte dos dados")
+load_option = st.radio(
+    "Escolha como deseja carregar os dados:",
+    options=[
+        "📤 Upload manual (seu arquivo CSV)",
+        "🌐 URL do GitHub (raw)",
+        "📦 Exemplos pré-configurados"
+    ],
+    horizontal=True,
+    label_visibility="collapsed"
+)
 
-if uploaded_file:
-    # Processamento dos dados
-    df = pd.read_csv(uploaded_file)
+df = None
+
+if load_option == "📤 Upload manual (seu arquivo CSV)":
+    st.markdown("#### Faça upload do seu arquivo CSV")
+    uploaded_file = st.file_uploader(
+        "Arraste e solte ou clique para procurar",
+        type="csv",
+        key="file_uploader",
+        help="Formatos suportados: CSV com colunas 'source' e 'target'"
+    )
+    if uploaded_file:
+        df = pd.read_csv(uploaded_file)
+        
+elif load_option == "🌐 URL do GitHub (raw)":
+    st.markdown("#### Carregar de URL GitHub (raw)")
+    col1, col2 = st.columns([3, 1])
+    with col1:
+        github_url = st.text_input(
+            "Cole a URL raw do GitHub",
+            value="",
+            placeholder="https://raw.githubusercontent.com/.../arquivo.csv",
+            help="""Como obter:
+            1. Acesse o arquivo no GitHub
+            2. Clique em 'Raw'
+            3. Copie a URL do navegador
+            Exemplo: https://raw.githubusercontent.com/Croncl/projetoU3-analise-de-redes/main/distribution_relationships.csv"""
+        )
+    with col2:
+        st.write("")  # Espaçamento
+        st.write("")  # Espaçamento
+        if st.button("Carregar", key="load_url_btn"):
+            if github_url:
+                with st.spinner("Carregando..."):
+                    try:
+                        if "raw.githubusercontent.com" in github_url:
+                            df = pd.read_csv(github_url)
+                            st.success("✅ Arquivo carregado com sucesso!")
+                        else:
+                            st.warning("⚠️ Use uma URL raw do GitHub (raw.githubusercontent.com)")
+                    except Exception as e:
+                        st.error(f"❌ Erro ao carregar: {str(e)}")
+            else:
+                st.warning("⚠️ Por favor, insira uma URL válida")
+
+else:  # Opções pré-definidas
+    st.markdown("#### Exemplos disponíveis")
+    example_option = st.selectbox(
+        "Selecione um dataset de exemplo:",
+        options=[
+            "📊 Distribuições (exemplo simples)",
+            "🐦 Tweets Rouanet (reduzido)",
+            "🦅 Tweets Rouanet (completo)"
+        ],
+        index=0
+    )
+    
+    file_urls = {
+        "📊 Distribuições (exemplo simples)": "https://raw.githubusercontent.com/Croncl/projetoU3-analise-de-redes/main/distribution_relationships.csv",
+        "🐦 Tweets Rouanet (reduzido)": "https://raw.githubusercontent.com/Croncl/projetoU3-analise-de-redes/main/tweets_rouanet_graph_reduzido_filtrado.csv",
+        "🦅 Tweets Rouanet (completo)": "https://raw.githubusercontent.com/Croncl/projetoU3-analise-de-redes/main/tweets_rouanet_graph_filtrado.csv"
+    }
+    
+    if st.button("Carregar Exemplo", key="load_example_btn"):
+        with st.spinner(f"Carregando {example_option.split('(')[0].strip()}..."):
+            try:
+                df = pd.read_csv(file_urls[example_option])
+                st.success(f"✅ {example_option} carregado com sucesso!")
+            except Exception as e:
+                st.error(f"❌ Falha no carregamento: {str(e)}")
+
+# Visualização dos dados (para todas as opções)
+if df is not None:
+    with st.expander("🔍 Visualizar amostra dos dados", expanded=True):
+        st.dataframe(df.head(3))
+        st.caption(f"📊 Total: {len(df)} registros | 🏷️ Colunas: {', '.join(df.columns)}")
+        
+    # Processamento do grafo
     df.dropna(subset=["source", "target"], inplace=True)
     G = nx.from_pandas_edgelist(
         df, source="source", target="target", create_using=nx.DiGraph()
@@ -33,7 +117,7 @@ if uploaded_file:
     G.remove_edges_from(nx.selfloop_edges(G))
 
     st.success(
-        f"Grafo carregado: {G.number_of_nodes()} nós e {G.number_of_edges()} arestas"
+        f"🎉 Grafo carregado: {G.number_of_nodes()} nós e {G.number_of_edges()} arestas"
     )
 
     # =============================================
