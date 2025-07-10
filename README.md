@@ -1,6 +1,5 @@
 # 🔍 Análise e Visualização de Redes
-
-![Screenshot da Aplicação](       )
+Streamlit: https://kutdwqpuhtjzuns8ocqe5r.streamlit.app/   
 
 Este projeto é uma aplicação web interativa desenvolvida com **Streamlit** para análise e visualização de redes direcionadas a partir de dados tabulares, oferecendo insights sobre a estrutura e dinâmica de redes complexas.
 

@@ -10,6 +10,10 @@ import community as community_louvain  # Certifique-se de ter isso no início
 from collections import Counter
 
 
+import streamlit as st
+import pandas as pd
+import networkx as nx
+
 # Configuração da página
 st.set_page_config(layout="wide", page_title="Análise de Redes")
 st.title("🔍 Análise e Visualização de Redes")
@@ -19,6 +23,10 @@ Esta aplicação analisa redes a partir de dados de relacionamento.
 Carregue um arquivo CSV com colunas 'source' e 'target' para começar.
 """
 )
+
+# Inicializa session_state se necessário
+if "df" not in st.session_state:
+    st.session_state.df = None
 
 # Upload do arquivo - versão com opções
 st.markdown("### 📁 Selecione a fonte dos dados")
@@ -33,8 +41,6 @@ load_option = st.radio(
     label_visibility="collapsed"
 )
 
-df = None
-
 if load_option == "📤 Upload manual (seu arquivo CSV)":
     st.markdown("#### Faça upload do seu arquivo CSV")
     uploaded_file = st.file_uploader(
@@ -45,7 +51,8 @@ if load_option == "📤 Upload manual (seu arquivo CSV)":
     )
     if uploaded_file:
         df = pd.read_csv(uploaded_file)
-        
+        st.session_state.df = df
+
 elif load_option == "🌐 URL do GitHub (raw)":
     st.markdown("#### Carregar de URL GitHub (raw)")
     col1, col2 = st.columns([3, 1])
@@ -69,6 +76,7 @@ elif load_option == "🌐 URL do GitHub (raw)":
                     try:
                         if "raw.githubusercontent.com" in github_url:
                             df = pd.read_csv(github_url)
+                            st.session_state.df = df
                             st.success("✅ Arquivo carregado com sucesso!")
                         else:
                             st.warning("⚠️ Use uma URL raw do GitHub (raw.githubusercontent.com)")
@@ -88,27 +96,30 @@ else:  # Opções pré-definidas
         ],
         index=0
     )
-    
+
     file_urls = {
         "📊 Distribuições (exemplo simples)": "https://raw.githubusercontent.com/Croncl/projetoU3-analise-de-redes/main/distribution_relationships.csv",
         "🐦 Tweets Rouanet (reduzido)": "https://raw.githubusercontent.com/Croncl/projetoU3-analise-de-redes/main/tweets_rouanet_graph_reduzido_filtrado.csv",
         "🦅 Tweets Rouanet (completo)": "https://raw.githubusercontent.com/Croncl/projetoU3-analise-de-redes/main/tweets_rouanet_graph_filtrado.csv"
     }
-    
+
     if st.button("Carregar Exemplo", key="load_example_btn"):
         with st.spinner(f"Carregando {example_option.split('(')[0].strip()}..."):
             try:
                 df = pd.read_csv(file_urls[example_option])
+                st.session_state.df = df
                 st.success(f"✅ {example_option} carregado com sucesso!")
             except Exception as e:
                 st.error(f"❌ Falha no carregamento: {str(e)}")
 
 # Visualização dos dados (para todas as opções)
-if df is not None:
+if st.session_state.df is not None:
+    df = st.session_state.df
+
     with st.expander("🔍 Visualizar amostra dos dados", expanded=True):
         st.dataframe(df.head(3))
         st.caption(f"📊 Total: {len(df)} registros | 🏷️ Colunas: {', '.join(df.columns)}")
-        
+
     # Processamento do grafo
     df.dropna(subset=["source", "target"], inplace=True)
     G = nx.from_pandas_edgelist(
@@ -119,6 +130,7 @@ if df is not None:
     st.success(
         f"🎉 Grafo carregado: {G.number_of_nodes()} nós e {G.number_of_edges()} arestas"
     )
+
 
     # =============================================
     # MÉTRICAS ESTRUTURAIS(Sem filtros)
