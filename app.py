@@ -461,10 +461,11 @@ if st.session_state.df is not None:
                     x, y = pos[node]
                     ax.text(
                         x, y, str(node),
-                        fontsize=8,
+                        fontsize=5.5,
+                        color='white',
                         ha='center',
                         va='center',
-                        bbox=dict(facecolor='black', alpha=0.7, edgecolor='none')
+                        bbox=dict(facecolor='white', alpha=0.15, edgecolor='none', boxstyle='round,pad=0.2')
                     )
 
             # Título e eixos
@@ -717,10 +718,10 @@ if st.session_state.df is not None:
         for node, _ in top_degree_nodes:
             x, y = pos[node]
             ax.text(x, y, str(node), 
-                fontsize=8, 
+                fontsize=6, 
                 ha='center', 
                 va='center',
-                bbox=dict(facecolor='black', alpha=0.7, edgecolor='none'))
+                bbox=dict(facecolor='black', alpha=0.15, edgecolor='none'))
         
         # Legenda de comunidades
         legend_elements = [
