@@ -1,5 +1,6 @@
 # 🔍 Análise e Visualização de Redes
-Streamlit: https://kutdwqpuhtjzuns8ocqe5r.streamlit.app/   
+Streamlit: https://kutdwqpuhtjzuns8ocqe5r.streamlit.app/  
+GitHub Pages: https://croncl.github.io/projetoU3-analise-de-redes-network/
 
 Este projeto é uma aplicação web interativa desenvolvida com **Streamlit** para análise e visualização de redes direcionadas a partir de dados tabulares, oferecendo insights sobre a estrutura e dinâmica de redes complexas.
 

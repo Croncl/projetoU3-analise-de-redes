@@ -9,11 +9,6 @@ import seaborn as sns
 import community as community_louvain  # Certifique-se de ter isso no início
 from collections import Counter
 
-
-import streamlit as st
-import pandas as pd
-import networkx as nx
-
 # Configuração da página
 st.set_page_config(layout="wide", page_title="Análise de Redes")
 st.title("🔍 Análise e Visualização de Redes")
@@ -212,6 +207,14 @@ if st.session_state.df is not None:
         "⚠️ Se a rede não for conexa (ao menos ignorando a direção das arestas), a excentricidade média "
         "não poderá ser calculada e o valor será 'N/A'."
     )
+    help_modularidade = (
+        "A modularidade mede a densidade de conexões dentro de comunidades em comparação com conexões entre elas.\n\n"
+        "- Valores próximos de 1 indicam comunidades bem definidas, com alta densidade interna e baixa externa.\n"
+        "- Valores próximos de 0 ou negativos sugerem que a rede não possui uma estrutura comunitária forte.\n\n"
+        "⚠️ A modularidade é calculada após detectar comunidades (ex: usando o algoritmo Louvain). "
+        "Se não houver comunidades detectadas, o valor será 'N/A'."
+    )
+    
 
 
     def calcular_assortatividade_segura(grafo):
@@ -272,6 +275,14 @@ if st.session_state.df is not None:
                 st.metric("PageRank (médio)", f"{pr_avg:.4f}", help=help_pagerank)
             except Exception as e:
                 st.metric("PageRank (médio)", "N/A", help=help_pagerank)
+            try:
+                from networkx.algorithms.community import greedy_modularity_communities
+                communities = list(greedy_modularity_communities(G.to_undirected()))
+                modularity = nx.algorithms.community.quality.modularity(G.to_undirected(), communities)
+                st.metric("Modularidade", f"{modularity:.4f}", help=help_modularidade)
+            except Exception as e:
+                st.metric("Modularidade", "N/A", help=help_modularidade)
+                
 
         with col2:
             if nx.is_directed(G):
