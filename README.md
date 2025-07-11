@@ -112,7 +112,7 @@ C,A,type3
 
 ## 🌐 Demonstração Online
 Acesse a versão hospedada:  
-[![Streamlit App]
+[![Streamlit App]: https://kutdwqpuhtjzuns8ocqe5r.streamlit.app/
 
 ## 📚 Glossário
 - **SCC**: Componente Fortemente Conectado
